@@ -69,7 +69,7 @@ func main() {
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, "Hello World! Server is running. Database connected: %s:%s", cfg.DBHost, cfg.DBPort)
+		fmt.Fprintf(w, "Hello World v2! Server is running. Database connected: %s:%s", cfg.DBHost, cfg.DBPort)
 	})
 
 	http.HandleFunc("/api/greetings", greetingHandler.GetGreetings)
