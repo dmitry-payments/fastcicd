@@ -1,10 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/joho/godotenv"
+
+	"fastcicd/api/bot"
 )
 
 type Config struct {
@@ -37,17 +40,21 @@ func getEnv(key, defaultValue string) string {
 }
 
 func main() {
+	godotenv.Load()
+
 	cfg := loadConfig()
 	log.Printf("Starting server with config: %+v\n", cfg)
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, "Hello World! Server is running.")
-	})
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/telegramWebhook", bot.TelegramWebhookHandler)
+
+	// отдаём frontend
+	mux.Handle("/", http.FileServer(http.Dir("./web")))
 
 	serverAddr := ":" + cfg.ServerPort
 	log.Printf("Server starting on %s", serverAddr)
-	if err := http.ListenAndServe(serverAddr, nil); err != nil {
+	if err := http.ListenAndServe(serverAddr, mux); err != nil {
 		log.Fatal(err)
 	}
 }
