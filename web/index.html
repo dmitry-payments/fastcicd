@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+body{
+  margin:0;
+  font-family:system-ui;
+  background:#0f1115;
+  color:#fff;
+}
+
+.app{
+  padding-bottom:90px;
+}
+
+/* TOP BAR */
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px;
+}
+
+.balance{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:#1a1f27;
+  padding:8px 14px;
+  border-radius:20px;
+}
+
+.plus{
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  background:#2d6bff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+}
+
+.menu{
+  font-size:22px;
+  opacity:0.8;
+}
+
+/* LIVE */
+.live{
+  margin:0 16px;
+  background:#2a2f38;
+  padding:14px;
+  border-radius:12px;
+  font-weight:700;
+  font-size:18px;
+  margin-bottom:16px;
+}
+
+/* EGGS CARD */
+.eggs{
+  margin:0 16px;
+  background:#178b57;
+  border-radius:22px;
+  padding:22px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  cursor:pointer;
+}
+
+.eggs-icon{
+  font-size:44px;
+}
+
+.eggs-title{
+  font-size:22px;
+  font-weight:700;
+}
+
+.eggs-sub{
+  opacity:0.8;
+  font-size:14px;
+}
+
+/* NAV */
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:70px;
+  background:#141821;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  border-top:1px solid rgba(255,255,255,0.05);
+}
+
+.nav-item{
+  font-size:12px;
+  opacity:0.6;
+  text-align:center;
+}
+
+.nav-item.active{
+  opacity:1;
+  color:#2d6bff;
+  font-weight:600;
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <div class="top">
+    <div class="balance">
+      ⭐ <span id="stars">0</span>
+      <div class="plus">+</div>
+    </div>
+    <div class="menu">⋮</div>
+  </div>
+
+  <div class="live">LIVE</div>
+
+  <div class="eggs" onclick="openEgg()">
+    <div class="eggs-icon">🥚</div>
+    <div>
+      <div class="eggs-title">Eggs</div>
+      <div class="eggs-sub">6 cases</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <div class="nav-item active">Cases</div>
+  <div class="nav-item">Raffles</div>
+  <div class="nav-item">Tasks</div>
+  <div class="nav-item">Leaderboard</div>
+  <div class="nav-item">Profile</div>
+</div>
+
+<script>
+const tg = window.Telegram.WebApp;
+tg.ready();
+tg.expand();
+
+function openEgg(){
+  alert("Egg opened");
+}
+</script>
+
+</body>
+</html>
