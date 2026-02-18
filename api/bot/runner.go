@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
@@ -21,6 +22,7 @@ func init() {
 
 func TelegramWebhookHandler(w http.ResponseWriter, r *http.Request) {
 	var update tgbotapi.Update
+
 	if err := json.NewDecoder(r.Body).Decode(&update); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -33,26 +35,27 @@ func TelegramWebhookHandler(w http.ResponseWriter, r *http.Request) {
 
 	if update.Message.IsCommand() && update.Message.Command() == "start" {
 
-		// Кнопка со ссылкой
-		btn := tgbotapi.NewInlineKeyboardButtonURL(
-			"🎮 Open Casino",
-			"https://casinoenginebot.ru",
-		)
+		payload := map[string]string{
+			"chat_id": strconv.FormatInt(update.Message.Chat.ID, 10),
+			"text":    "🎁 Gift cases with the highest chances!",
+			"reply_markup": `{
+				"inline_keyboard":[[
+					{
+						"text":"🎮 Open Casino",
+						"web_app":{"url":"https://casinoenginebot.ru"}
+					}
+				]]
+			}`,
+		}
 
-		// Клавиатура
-		keyboard := tgbotapi.NewInlineKeyboardMarkup(
-			tgbotapi.NewInlineKeyboardRow(btn),
-		)
-
-		// Сообщение
-		msg := tgbotapi.NewMessage(
-			update.Message.Chat.ID,
-			"🎁 Gift cases with the highest chances!",
-		)
-
-		msg.ReplyMarkup = keyboard
-
-		_, _ = Bot.Send(msg)
+		resp, err := Bot.MakeRequest("sendMessage", payload)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		if !resp.Ok {
+			log.Println(resp.Description)
+		}
 	}
 
 	w.WriteHeader(http.StatusOK)
